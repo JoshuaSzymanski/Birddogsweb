@@ -131,6 +131,9 @@ if __name__ == "__main__":
         stdout, stderr = node_process.communicate()
         if stderr:
             app.logger.error(f"Error starting Node.js server: {stderr.decode()}")
+            if "Port 3007 is already in use" in stderr.decode():
+                app.logger.error("Port 3007 is already in use. Please free the port and try again.")
+                raise SystemExit(1)
         else:
             app.logger.debug(f"Node.js server started successfully: {stdout.decode()}")
 
