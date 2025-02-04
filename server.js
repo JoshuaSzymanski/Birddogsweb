@@ -6,7 +6,7 @@ const phpExpress = require('php-express')({
     binPath: 'php' // Replace with the path to your PHP binary if necessary
 });
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
@@ -81,22 +81,22 @@ app.post('/upload', (req, res) => {
 });
 
 // Add a route to handle article insertion
-app.post('/insert_article', (req, res) => {
+app.post('/insert_article.php', (req, res) => {
     const article = req.body;
-    console.log('Article received:', article);
-    // Implement your logic to handle the article upload
-    // For example, save the article to a database
+    // Add your logic to insert the article into the database
+    // For example:
     // db.collection('articles').insertOne(article, (err, result) => {
     //     if (err) {
-    //         res.status(500).send('Error inserting article');
-    //     } else {
-    //         res.status(200).send('Article inserted successfully');
+    //         return res.status(500).send(err);
     //     }
+    //     res.status(200).send(result);
     // });
 
-    // For now, just send a success response
     res.status(200).send({ success: true, message: 'Article inserted successfully' });
 });
+
+// Add a route to handle article insertion via PHP
+app.post('/insert_article.php', phpExpress.router);
 
 // Add routes for individual article pages
 app.get('/article/:id', (req, res) => {

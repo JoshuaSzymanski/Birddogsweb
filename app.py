@@ -60,6 +60,30 @@ def contact():
 def upload():
     return render_template('upload-article.html')
 
+@app.route('/article/<int:article_id>')
+def view_article(article_id):
+    try:
+        connection = get_db_connection()
+        if connection is None:
+            flash('Database connection failed', 'error')
+            return redirect(url_for('upload'))
+
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute('SELECT * FROM articles WHERE id = %s', (article_id,))
+        article = cursor.fetchone()
+        cursor.close()
+        connection.close()
+
+        if article is None:
+            flash('Article not found', 'error')
+            return redirect(url_for('upload'))
+
+        return render_template('article.ejs', articleId=article_id, articleTitle=article['title'], articleContent=article['content'])
+    except Exception as e:
+        app.logger.error(f'Error fetching article: {e}', exc_info=True)
+        flash('Failed to fetch article', 'error')
+        return redirect(url_for('upload'))
+
 @app.route('/insert_article', methods=['POST'])
 def insert_article():
     try:
@@ -76,8 +100,8 @@ def insert_article():
         # Save the image file
         image_filename = None
         if image:
-            image_filename = os.path.join('uploads', image.filename)
-            image.save(os.path.join(app.static_folder, image_filename))
+            image_filename = os.path.join('/c:/xampp/htdocs/uploads', image.filename)
+            image.save(image_filename)
 
         connection = get_db_connection()
         if connection is None:
@@ -87,12 +111,13 @@ def insert_article():
         cursor = connection.cursor()
         cursor.execute('INSERT INTO articles (title, summary, content, image) VALUES (%s, %s, %s, %s)', (title, summary, content, image_filename))
         connection.commit()
+        article_id = cursor.lastrowid
         cursor.close()
         connection.close()
 
         app.logger.debug(f'Article inserted: {title}')
         flash('Article inserted successfully', 'success')
-        return redirect(url_for('upload'))
+        return redirect(url_for('view_article', article_id=article_id))
     except Exception as e:
         app.logger.error(f'Error inserting article: {e}', exc_info=True)
         flash('Failed to insert article', 'error')
