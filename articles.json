@@ -1,0 +1,24 @@
+{
+  "articles": [
+    {
+      "id": 1,
+      "image": "path/to/image1.jpg",
+      "title": "Article Title 1",
+      "summary": "Article summary 1...",
+      "content": "Full content of article 1..."
+    },
+    {
+      "id": 2,
+      "image": "path/to/image2.jpg",
+      "title": "Article Title 2",
+      "summary": "Article summary 2...",
+      "content": "Full content of article 2..."
+    },
+    {
+      "id": 3,
+      "title": "bret coin good",
+      "content": "yes",
+      "image": "/uploads/1738140319114-bret coin art.png"
+    }
+  ]
+}

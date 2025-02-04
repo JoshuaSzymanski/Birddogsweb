@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Article - Birddogs Web</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2B2B2B; /* Dark Gray */
+            color: #FFFFFF; /* White */
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #2B2B2B; /* Dark Gray */
+            overflow: hidden;
+            width: 100%; /* Spread across the page width */
+            box-sizing: border-box; /* Include padding in the element's total width and height */
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: #FFFFFF; /* White */
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            background-color: #575757; /* Lighter Gray */
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #3C3C3C; /* Slightly lighter gray */
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 20px;
+            border: none;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .file-label {
+            display: block;
+            padding: 10px;
+            background-color: #4CAF50; /* Green */
+            color: white;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .file-label:hover {
+            background-color: #45a049; /* Darker Green */
+        }
+        .file-name {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .submit-button {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+        .submit-button:hover {
+            background-color: #45a049; /* Darker Green */
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/articles">Articles</a>
+        <a href="/upload">Upload</a>
+    </div>
+    <div class="container">
+        <h1>Upload New Article</h1>
+        <form id="upload-article-form" action="/insert_article.php" method="post" enctype="multipart/form-data">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" required>
+
+            <label for="summary">Summary</label>
+            <textarea id="summary" name="summary" rows="3" required></textarea>
+
+            <label for="content">Content</label>
+            <textarea id="content" name="content" rows="10" required></textarea>
+
+            <label for="image" class="file-label">Upload Image</label>
+            <input type="file" id="image" name="image" accept="image/*">
+            <div class="file-name" id="file-name">No file chosen</div>
+
+            <button type="submit" class="submit-button">Upload</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('image').addEventListener('change', function() {
+            const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
+            document.getElementById('file-name').textContent = fileName;
+        });
+    </script>
+</body>
+</html>

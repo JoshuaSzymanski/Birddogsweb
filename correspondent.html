@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ...existing code... -->
+    <style>
+        .bento-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .bento-item {
+            background-color: #FFFFFF; /* White */
+            border: 1px solid #000000; /* Black */
+            border-radius: 16px; /* More rounded edges */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            text-align: center;
+            color: #000000; /* Black */
+            position: relative;
+            overflow: hidden;
+            transition: height 0.3s ease;
+        }
+        .bento-item h2 {
+            margin-top: 0;
+        }
+        .bento-item p {
+            color: #666;
+        }
+        .bento-item a {
+            display: inline-block;
+            margin-top: 10px;
+            color: #000000; /* Black */
+            text-decoration: none;
+        }
+        .bento-item a:hover {
+            color: #f1f1f1;
+        }
+        .bento-item .accordion-content {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+        .bento-item:hover {
+            height: 350px; /* Increase height on hover */
+        }
+        .bento-item:hover .accordion-content {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- ...existing code... -->
+    <div class="bento-container" id="articles-container">
+        <!-- Articles will be dynamically inserted here -->
+    </div>
+    <!-- ...existing code... -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/fetch_articles.php')
+                .then(response => response.json())
+                .then(data => {
+                    const articlesContainer = document.getElementById('articles-container');
+                    data.articles.forEach(article => {
+                        const articleElement = document.createElement('div');
+                        articleElement.className = 'bento-item';
+                        articleElement.innerHTML = `
+                            <h2>${article.title}</h2>
+                            <p>${article.summary}</p>
+                            <a href="/article/${article.id}">Read More</a>
+                            <div class="accordion-content">
+                                <img src="${article.image}" alt="${article.title}" style="width: 100%; height: auto;">
+                                <p>${article.content}</p>
+                            </div>
+                        `;
+                        articlesContainer.appendChild(articleElement);
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

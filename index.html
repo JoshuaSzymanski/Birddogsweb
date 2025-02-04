@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ...existing code... -->
+</head>
+<body>
+    <!-- ...existing code... -->
+    <div id="chart">
+        <!-- Chart content -->
+    </div>
+    <div id="articles" class="articles-section">
+        <div id="articles-container">
+            <!-- Articles will be dynamically inserted here -->
+        </div>
+    </div>
+    <!-- ...existing code... -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/fetch_articles.php')
+                .then(response => response.json())
+                .then(data => {
+                    const articlesContainer = document.getElementById('articles-container');
+                    data.articles.forEach(article => {
+                        const articleElement = document.createElement('div');
+                        articleElement.className = 'article';
+                        articleElement.innerHTML = `
+                            <img src="${article.image}" alt="${article.title}">
+                            <div>
+                                <h3>${article.title}</h3>
+                                <p>${article.summary}</p>
+                            </div>
+                        `;
+                        articlesContainer.appendChild(articleElement);
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

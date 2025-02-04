@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leads</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #FFFFFF; /* White */
+            color: #000000; /* Black */
+            margin: 0;
+            padding: 0;
+            position: relative;
+            min-height: 100vh; /* Ensure body spans the whole page height */
+        }
+        header {
+            background-color: #000000; /* Black */
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        header h1 {
+            margin: 0;
+            color: #FFFFFF; /* White */
+        }
+        header .logo {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            width: 50px; /* Adjust width as needed */
+            height: auto;
+        }
+        .watermark {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.1; /* Adjust opacity as needed */
+            z-index: 0;
+            width: auto;
+            height: 100%; /* Span the whole page height */
+            pointer-events: none; /* Ensure the watermark does not interfere with other elements */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Leads</h1>
+        <img src="src/images/V3 logo circle crop_processed (3).png" alt="Logo" class="logo"> <!-- Add logo image -->
+    </header>
+    <p>Details about Service 1.</p>
+    <img src="src/images/V3 logo circle crop_processed (3).png" alt="Watermark" class="watermark"> <!-- Add watermark image -->
+</body>
+</html>

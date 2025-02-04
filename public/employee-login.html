@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Login - Birddogs Web</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2B2B2B; /* Dark Gray */
+            color: #FFFFFF; /* White */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .navbar {
+            background-color: #2B2B2B; /* Dark Gray */
+            overflow: hidden;
+            width: 100%; /* Spread across the page width */
+            box-sizing: border-box; /* Include padding in the element's total width and height */
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            position: absolute;
+            top: 0;
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: #FFFFFF; /* White */
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            border-bottom: 3px solid transparent; /* Add transparent border for underline effect */
+        }
+        .navbar a:hover {
+            border-bottom: 3px solid #4CAF50; /* Green underline */
+            color: #FFFFFF; /* White */
+        }
+        .search-container {
+            margin-left: auto;
+            padding: 14px 20px;
+        }
+        .search-container input[type="text"] {
+            padding: 6px;
+            margin-top: 8px;
+            font-size: 17px;
+            border: none;
+            background-color: #3C3C3C; /* Lighter shade of Dark Gray */
+            color: #FFFFFF; /* White */
+        }
+        .search-container button {
+            padding: 6px 10px;
+            margin-top: 8px;
+            margin-right: 16px;
+            background: #4CAF50; /* Green */
+            color: #FFFFFF; /* White */
+            font-size: 17px;
+            border: none;
+            cursor: pointer;
+        }
+        .search-container button:hover {
+            background: #45a049; /* Darker Green */
+        }
+        .navbar .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        .navbar .logo-container h1 {
+            margin: 0;
+            padding: 14px 20px;
+            color: #FFFFFF; /* White */
+        }
+        .navbar .logo-container img {
+            height: 50px; /* Match the navbar height */
+            margin-right: 10px; /* Move the logo slightly to the left */
+        }
+        .signin-form {
+            background-color: #3C3C3C; /* Lighter shade of Dark Gray */
+            color: #FFFFFF; /* White */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            width: 400px;
+            text-align: center;
+        }
+        .signin-form input {
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: #2B2B2B; /* Dark Gray */
+            color: #FFFFFF; /* White */
+        }
+        .signin-form button {
+            padding: 15px 30px;
+            background-color: #4CAF50; /* Green */
+            color: #FFFFFF; /* White */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .signin-form button:hover {
+            background-color: #45a049; /* Darker Green */
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo-container">
+            <img src="/images/logo.png" alt="Logo"> <!-- Ensure the path is correct -->
+            <h1>SVD Inc.</h1>
+        </div>
+        <a href="/">Home</a>
+        <a href="/correspondent">Correspondent</a>
+        <a href="/paper-trading">Trading SIM</a> <!-- Add Trading Sim to the navbar -->
+        <div class="search-container">
+            <form action="/search">
+                <input type="text" placeholder="Search.." name="search">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        <a href="/employee-login" style="margin-left: auto;">Employee Login</a> <!-- Add Employee Login to the navbar -->
+    </div>
+    <div class="signin-form">
+        <h2>Employee Sign In</h2>
+        <form id="signin-form">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Sign In</button>
+        </form>
+        <h2>Admin Access</h2>
+        <form id="admin-access-form">
+            <input type="text" id="admin-username" placeholder="Admin Username" required>
+            <input type="password" id="admin-password" placeholder="Admin Password" required>
+            <button type="submit">Access Registration</button>
+        </form>
+        <h2>Upload Article</h2>
+        <form id="uploadForm" action="/insert_article" method="POST">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required><br><br>
+            <label for="content">Content:</label>
+            <textarea id="content" name="content" required></textarea><br><br>
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('signin-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            fetch('/signin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '/upload-article';
+                } else {
+                    alert('Invalid credentials. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        });
+
+        document.getElementById('admin-access-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+
+            // Redirect to the employee registration page with admin credentials
+            window.location.href = `/employee-register?username=${username}&password=${password}`;
+        });
+    </script>
+</body>
+</html>

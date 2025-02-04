@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Page - Create Article</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2B2B2B; /* Dark Gray */
+            color: #FFFFFF; /* White */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .navbar {
+            background-color: #2B2B2B; /* Dark Gray */
+            overflow: hidden;
+            width: 100%; /* Spread across the page width */
+            box-sizing: border-box; /* Include padding in the element's total width and height */
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            position: absolute;
+            top: 0;
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: #FFFFFF; /* White */
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            border-bottom: 3px solid transparent; /* Add transparent border for underline effect */
+        }
+        .navbar a:hover {
+            border-bottom: 3px solid #4CAF50; /* Green underline */
+            color: #FFFFFF; /* White */
+        }
+        .form-container {
+            background-color: #3C3C3C; /* Lighter shade of Dark Gray */
+            color: #FFFFFF; /* White */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            width: 400px;
+            text-align: center;
+        }
+        .form-container input, .form-container textarea {
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: #2B2B2B; /* Dark Gray */
+            color: #FFFFFF; /* White */
+        }
+        .form-container button {
+            padding: 15px 30px;
+            background-color: #4CAF50; /* Green */
+            color: #FFFFFF; /* White */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #45a049; /* Darker Green */
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/correspondent">Correspondent</a>
+        <a href="/paper-trading">Trading SIM</a>
+        <a href="/employee-login" style="margin-left: auto;">Employee Login</a>
+    </div>
+    <div class="form-container">
+        <h2>Create New Article</h2>
+        <form id="create-article-form">
+            <input type="text" id="title" name="title" placeholder="Title" required>
+            <textarea id="summary" name="summary" placeholder="Summary" required></textarea>
+            <textarea id="content" name="content" placeholder="Content" required></textarea>
+            <input type="text" id="image" name="image" placeholder="Image URL" required>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('create-article-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const title = document.getElementById('title').value;
+            const summary = document.getElementById('summary').value;
+            const content = document.getElementById('content').value;
+            const image = document.getElementById('image').value;
+
+            fetch('/insert_article.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title, summary, content, image })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.success) {
+                    document.getElementById('create-article-form').reset();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        });
+    </script>
+</body>
+</html>

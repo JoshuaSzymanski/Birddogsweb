@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Birddogs Web</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2B2B2B; /* Dark Gray */
+            color: #FFFFFF; /* White */
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #2B2B2B; /* Dark Gray */
+            overflow: hidden;
+            width: 100%; /* Spread across the page width */
+            box-sizing: border-box; /* Include padding in the element's total width and height */
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: #FFFFFF; /* White */
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            border-bottom: 3px solid transparent; /* Add transparent border for underline effect */
+        }
+        .navbar a:hover {
+            border-bottom: 3px solid #4CAF50; /* Green underline */
+            color: #FFFFFF; /* White */
+        }
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #3C3C3C; /* Slightly lighter gray */
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .article {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #2B2B2B; /* Dark Gray */
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .article h2 {
+            margin: 0;
+        }
+        .article button {
+            background-color: #FF0000; /* Red */
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .article button:hover {
+            background-color: #CC0000; /* Darker Red */
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/correspondent">Correspondent</a>
+        <a href="/paper-trading">Trading Sim</a>
+        <a href="/upload-article">Upload Article</a>
+        <a href="/admin" style="margin-left: auto;">Manage Articles</a> <!-- Add Manage Articles button to the navbar -->
+    </div>
+    <div class="container">
+        <h1>Admin Page</h1>
+        <% articles.forEach(article => { %>
+            <div class="article">
+                <h2><%= article.title %></h2>
+                <button onclick="deleteArticle(<%= article.id %>)">Delete</button>
+            </div>
+        <% }) %>
+    </div>
+    <script>
+        function deleteArticle(articleId) {
+            const username = prompt('Enter admin username:');
+            const password = prompt('Enter admin password:');
+
+            fetch(`/admin/article/${articleId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Article deleted successfully.');
+                    location.reload();
+                } else {
+                    alert(data.message || 'Failed to delete article.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        }
+    </script>
+</body>
+</html>

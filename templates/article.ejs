@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article <%= articleId %> - Birddogs Web</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2B2B2B; /* Dark Gray */
+            color: #FFFFFF;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .article-title {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .article-content {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="article-title"><%= articleTitle %></h1>
+        <div class="article-content">
+            <%= articleContent %>
+        </div>
+        <a href="/" class="back-link">Back to Home</a>
+    </div>
+</body>
+</html>

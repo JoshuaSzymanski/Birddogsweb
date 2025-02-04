@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper Trading - Birddogs Web</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2B2B2B; /* Dark Gray */
+            color: #FFFFFF; /* White */
+            margin: 0;
+            padding: 0;
+        }
+        /* Custom scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #2B2B2B; /* Dark Gray */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #000000; /* Black */
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555555; /* Darker Gray */
+        }
+        .navbar {
+            background-color: #2B2B2B; /* Dark Gray */
+            overflow: hidden;
+            width: 100%; /* Spread across the page width */
+            box-sizing: border-box; /* Include padding in the element's total width and height */
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: #FFFFFF; /* White */
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            border-bottom: 3px solid transparent; /* Add transparent border for underline effect */
+        }
+        .navbar a:hover {
+            border-bottom: 3px solid #4CAF50; /* Green underline */
+            color: #FFFFFF; /* White */
+        }
+        .search-container {
+            margin-left: auto;
+            padding: 14px 20px;
+        }
+        .search-container input[type="text"] {
+            padding: 6px;
+            margin-top: 8px;
+            font-size: 17px;
+            border: none;
+            background-color: #3C3C3C; /* Lighter shade of Dark Gray */
+            color: #FFFFFF; /* White */
+        }
+        .search-container button {
+            padding: 6px 10px;
+            margin-top: 8px;
+            margin-right: 16px;
+            background: #4CAF50; /* Green */
+            color: #FFFFFF; /* White */
+            font-size: 17px;
+            border: none;
+            cursor: pointer;
+        }
+        .search-container button:hover {
+            background: #45a049; /* Darker Green */
+        }
+        .navbar .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        .navbar .logo-container h1 {
+            margin: 0;
+            padding: 14px 20px;
+            color: #FFFFFF; /* White */
+        }
+        .navbar .logo-container img {
+            height: 50px; /* Match the navbar height */
+            margin-right: 10px; /* Move the logo slightly to the left */
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        .content h2 {
+            color: #4CAF50; /* Green */
+        }
+        .content p {
+            font-size: 18px;
+        }
+        .paper-trading-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .paper-trading-card {
+            background-color: #3C3C3C; /* Lighter shade of Dark Gray */
+            color: #FFFFFF; /* White */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 20px;
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .paper-trading-card:hover {
+            transform: scale(1.05);
+        }
+        .paper-trading-card h3 {
+            margin: 10px 0;
+        }
+        .paper-trading-card p {
+            font-size: 14px;
+        }
+        .trading-form {
+            margin-top: 20px;
+        }
+        .trading-form input, .trading-form select, .trading-form button {
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+        }
+        .portfolio {
+            margin-top: 20px;
+        }
+        .portfolio table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .portfolio th, .portfolio td {
+            padding: 10px;
+            border: 1px solid #FFFFFF;
+            text-align: left;
+        }
+        .portfolio th {
+            background-color: #4CAF50; /* Green */
+        }
+        .portfolio td {
+            background-color: #3C3C3C; /* Lighter shade of Dark Gray */
+        }
+        .chart-container {
+            margin-top: 20px;
+        }
+        .chart-container h3 {
+            color: #4CAF50; /* Green */
+        }
+        .autocomplete-suggestions {
+            position: absolute;
+            border: 1px solid #4CAF50;
+            background-color: #3C3C3C;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        .autocomplete-suggestion {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .autocomplete-suggestion:hover {
+            background-color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo-container">
+            <img src="/images/logo.png" alt="Logo"> <!-- Ensure the path is correct -->
+            <h1>SVD Inc.</h1>
+        </div>
+        <a href="/">Home</a>
+        <a href="/correspondent">Correspondent</a>
+        <a href="/paper-trading">Trading Sim</a> <!-- Add Paper Trading to the navbar -->
+        <div class="search-container">
+            <form action="/search">
+                <input type="text" placeholder="Search.." name="search">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+    <div class="content">
+        <h2>Paper Trading</h2>
+        <p>Practice trading without risking real money. Use our paper trading platform to test your strategies and improve your skills.</p>
+        <div class="trading-form">
+            <input type="text" id="symbol" placeholder="Symbol (e.g., bitcoin)" oninput="showSuggestions()">
+            <div id="suggestions" class="autocomplete-suggestions"></div>
+            <input type="number" id="quantity" placeholder="Quantity">
+            <select id="action">
+                <option value="buy">Buy</option>
+                <option value="sell">Sell</option>
+            </select>
+            <button onclick="executeTrade()">Execute Trade</button>
+        </div>
+        <div class="portfolio">
+            <h3>Portfolio</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Quantity</th>
+                        <th>Action</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="portfolio-body">
+                    <!-- Portfolio items will be added here dynamically -->
+                </tbody>
+            </table>
+        </div>
+        <div class="chart-container">
+            <h3>Portfolio Value Over Time</h3>
+            <canvas id="portfolioChart"></canvas>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const portfolio = [];
+        const portfolioHistory = [];
+        const tradableCoins = ["bitcoin", "ethereum", "ripple", "dogecoin", "litecoin", "tether", "solana", "cardano", "polkadot", "chainlink", "stellar", "usd-coin", "uniswap", "binancecoin"];
+
+        async function fetchPrice(symbol) {
+            try {
+                const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${symbol}&vs_currencies=usd`);
+                const data = await response.json();
+                if (data[symbol]) {
+                    return data[symbol].usd;
+                } else {
+                    throw new Error('Invalid symbol');
+                }
+            } catch (error) {
+                console.error('Error fetching price:', error);
+                alert('Error fetching price. Please try again.');
+                throw error;
+            }
+        }
+
+        async function executeTrade() {
+            const symbol = document.getElementById('symbol').value.toLowerCase();
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const action = document.getElementById('action').value;
+
+            if (symbol && quantity > 0 && tradableCoins.includes(symbol)) {
+                try {
+                    const price = await fetchPrice(symbol);
+                    const total = price * quantity;
+                    portfolio.push({ symbol, quantity, action, price, total });
+                    updatePortfolio();
+                    savePortfolio();
+                    updateChart();
+                } catch (error) {
+                    console.error('Error executing trade:', error);
+                }
+            } else {
+                alert('Please enter a valid symbol and quantity.');
+            }
+        }
+
+        function updatePortfolio() {
+            const portfolioBody = document.getElementById('portfolio-body');
+            portfolioBody.innerHTML = '';
+
+            portfolio.forEach(trade => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${trade.symbol.toUpperCase()}</td>
+                    <td>${trade.quantity}</td>
+                    <td>${trade.action}</td>
+                    <td>${trade.price.toFixed(2)}</td>
+                    <td>${trade.total.toFixed(2)}</td>
+                `;
+                portfolioBody.appendChild(row);
+            });
+        }
+
+        function savePortfolio() {
+            localStorage.setItem('portfolio', JSON.stringify(portfolio));
+        }
+
+        function loadPortfolio() {
+            const savedPortfolio = localStorage.getItem('portfolio');
+            if (savedPortfolio) {
+                portfolio.push(...JSON.parse(savedPortfolio));
+                updatePortfolio();
+                updateChart();
+            }
+        }
+
+        function updateChart() {
+            const labels = portfolio.map(trade => trade.symbol.toUpperCase());
+            const data = portfolio.map(trade => trade.total);
+
+            const ctx = document.getElementById('portfolioChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Portfolio Value',
+                        data: data,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        fill: true,
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function showSuggestions() {
+            const input = document.getElementById('symbol').value.toLowerCase();
+            const suggestions = document.getElementById('suggestions');
+            suggestions.innerHTML = '';
+
+            if (input.length > 0) {
+                const filteredCoins = tradableCoins.filter(coin => coin.startsWith(input));
+                filteredCoins.forEach(coin => {
+                    const suggestion = document.createElement('div');
+                    suggestion.classList.add('autocomplete-suggestion');
+                    suggestion.textContent = coin;
+                    suggestion.onclick = () => {
+                        document.getElementById('symbol').value = coin;
+                        suggestions.innerHTML = '';
+                    };
+                    suggestions.appendChild(suggestion);
+                });
+            }
+        }
+
+        window.onload = () => {
+            loadPortfolio();
+        };
+    </script>
+</body>
+</html>

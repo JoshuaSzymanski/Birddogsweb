@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Article - Birddogs Web</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2B2B2B; /* Dark Gray */
+            color: #FFFFFF; /* White */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .navbar {
+            background-color: #2B2B2B; /* Dark Gray */
+            overflow: hidden;
+            width: 100%; /* Spread across the page width */
+            box-sizing: border-box; /* Include padding in the element's total width and height */
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: #FFFFFF; /* White */
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            background-color: #575757; /* Lighter Gray */
+        }
+        .upload-form {
+            background-color: #3C3C3C; /* Lighter shade of Dark Gray */
+            color: #FFFFFF; /* White */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            width: 400px;
+            text-align: center;
+        }
+        .upload-form input, .upload-form textarea {
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: #2B2B2B; /* Dark Gray */
+            color: #FFFFFF; /* White */
+        }
+        .upload-form button {
+            padding: 15px 30px;
+            background-color: #4CAF50; /* Green */
+            color: #FFFFFF; /* White */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .upload-form button:hover {
+            background-color: #45a049; /* Darker Green */
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/articles">Articles</a>
+        <a href="/upload">Upload</a>
+    </div>
+    <div class="upload-form">
+        <h2>Upload Article</h2>
+        <form id="uploadForm">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required><br><br>
+            <label for="content">Content:</label>
+            <textarea id="content" name="content" required></textarea><br><br>
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+
+            fetch('/insert_article.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title, content })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.success) {
+                    document.getElementById('uploadForm').reset();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        });
+    </script>
+</body>
+</html>

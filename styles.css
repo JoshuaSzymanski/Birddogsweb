@@ -1,0 +1,36 @@
+.articles-section {
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+.articles-section h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.article {
+    display: flex;
+    margin-bottom: 20px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.article img {
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 20px;
+    border-radius: 5px;
+}
+
+.article h3 {
+    font-size: 18px;
+    margin: 0 0 10px;
+}
+
+.article p {
+    margin: 0;
+    color: #666;
+}

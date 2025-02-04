@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correspondent</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #FFFFFF; /* White */
+            color: #000000; /* Black */
+            margin: 0;
+            padding: 0;
+            position: relative;
+            min-height: 100vh; /* Ensure body spans the whole page height */
+        }
+        header {
+            background-color: #000000; /* Black */
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        header h1 {
+            margin: 0;
+            color: #FFFFFF; /* White */
+        }
+        header .logo {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            width: 50px; /* Adjust width as needed */
+            height: auto;
+        }
+        nav {
+            background-color: #000000; /* Black */
+            overflow: hidden;
+            width: 100%; /* Spread across the page width */
+            box-sizing: border-box; /* Include padding in the element's total width and height */
+        }
+        nav a {
+            float: left;
+            display: block;
+            color: #FFFFFF; /* White */
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            background-color: #f1f1f1;
+            color: #000000; /* Black */
+        }
+        nav .dropdown {
+            float: left;
+            overflow: hidden;
+        }
+        nav .dropdown .dropbtn {
+            font-size: 16px;
+            border: none;
+            outline: none;
+            color: #FFFFFF; /* White */
+            padding: 14px 16px;
+            background-color: inherit;
+            font-family: inherit;
+            margin: 0;
+        }
+        nav .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #000000; /* Black */
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+        nav .dropdown-content a {
+            float: none;
+            color: #FFFFFF; /* White */
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+        nav .dropdown-content a:hover {
+            background-color: #ddd;
+            color: #000000; /* Black */
+        }
+        nav .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .bento-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .bento-item {
+            background-color: #FFFFFF; /* White */
+            border: 1px solid #000000; /* Black */
+            border-radius: 16px; /* More rounded edges */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            text-align: center;
+            color: #000000; /* Black */
+            position: relative;
+            overflow: hidden;
+            transition: height 0.3s ease;
+        }
+        .bento-item h2 {
+            margin-top: 0;
+        }
+        .bento-item p {
+            color: #666;
+        }
+        .bento-item a {
+            display: inline-block;
+            margin-top: 10px;
+            color: #000000; /* Black */
+            text-decoration: none;
+        }
+        .bento-item a:hover {
+            color: #f1f1f1;
+        }
+        .bento-item .accordion-content {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+        .bento-item:hover {
+            height: 350px; /* Increase height on hover */
+        }
+        .bento-item:hover .accordion-content {
+            display: block;
+        }
+        .watermark {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.1; /* Adjust opacity as needed */
+            z-index: 0;
+            width: auto;
+            height: 100%; /* Span the whole page height */
+            pointer-events: none; /* Ensure the watermark does not interfere with other elements */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>SVD Inc.'s Correspondent</h1>
+        <img src="src/images/V3 logo circle crop_processed (3).png" alt="Logo" class="logo"> <!-- Add logo image -->
+    </header>
+    <nav>
+        <a href="/">Home</a>
+        <div class="dropdown">
+            <button class="dropbtn">Tiers 
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="#tier1">Tier 1</a>
+                <a href="#tier2">Tier 2</a>
+                <a href="#tier3">Tier 3</a>
+                <a href="/correspondent">Correspondent</a> <!-- Update Correspondent tier link -->
+            </div>
+        </div> 
+    </nav>
+    <div class="bento-container" style="justify-content: center;">
+        <!-- WordPress articles will be inserted here -->
+        {% for post in wordpress_posts %}
+        <div class="bento-item">
+            <h2>{{ post.title }}</h2>
+            <p>{{ post.excerpt }}</p>
+            <a href="{{ post.url }}">Read More</a>
+            <div class="accordion-content">
+                <img src="{{ post.image_url }}" alt="{{ post.title }}" style="width: 100%; height: auto;">
+                <p>{{ post.content }}</p>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- Add more bento-item blocks as needed -->
+    </div>
+    <img src="src/images/V3 logo circle crop_processed (3).png" alt="Watermark" class="watermark"> <!-- Add watermark image -->
+</body>
+</html>
