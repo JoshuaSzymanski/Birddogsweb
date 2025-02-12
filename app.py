@@ -58,7 +58,7 @@ def contact():
 
 @app.route('/upload')
 def upload():
-    return render_template('upload-article.html')
+    return render_template('upload-article.html', form_class='centered-form')
 
 @app.route('/article/<int:article_id>')
 def view_article(article_id):

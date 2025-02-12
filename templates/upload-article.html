@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ...existing code... -->
+    <style>
+        .centered-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div class="centered-form {{ form_class }}">
+        <form action="{{ url_for('insert_article') }}" method="post" enctype="multipart/form-data">
+            <!-- ...existing form fields... -->
+        </form>
+    </div>
+</body>
+</html>
