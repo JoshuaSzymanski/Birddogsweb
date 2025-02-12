@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_from_directory, redirect, url_for, flash
+from flask import Flask, render_template, request, send_from_directory, redirect, url_for, flash, session
 import logging
 import os
 import subprocess
@@ -56,8 +56,39 @@ def contact():
     app.logger.debug('Rendering contact.html')
     return render_template('contact.html')
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        connection = get_db_connection()
+        if connection:
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute('SELECT * FROM employees WHERE username = %s AND password = %s', (username, password))
+            user = cursor.fetchone()
+            cursor.close()
+            connection.close()
+            if user:
+                session['logged_in'] = True
+                flash('Login successful', 'success')
+                return redirect(url_for('upload'))
+            else:
+                flash('Invalid credentials', 'error')
+        else:
+            flash('Database connection failed', 'error')
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    flash('Logged out successfully', 'success')
+    return redirect(url_for('login'))
+
 @app.route('/upload')
 def upload():
+    if not session.get('logged_in'):
+        flash('Please log in to access this page', 'error')
+        return redirect(url_for('login'))
     return render_template('upload-article.html')
 
 @app.route('/insert_article', methods=['POST'])

@@ -12,6 +12,7 @@
             margin: 0;
             padding: 0;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -24,6 +25,8 @@
             display: flex;
             align-items: center;
             padding: 0 20px;
+            position: fixed;
+            top: 0;
         }
         .navbar a {
             float: left;
@@ -45,6 +48,7 @@
             width: 400px;
             text-align: center;
             margin: auto; /* Center the form horizontally */
+            margin-top: 60px; /* Add margin to avoid overlap with navbar */
         }
         .upload-form input, .upload-form textarea {
             width: 100%;
@@ -76,26 +80,26 @@
     </div>
     <div class="upload-form">
         <h2>Upload Article</h2>
-        <form id="uploadForm">
+        <form id="uploadForm" action="/insert_article.php" method="POST" enctype="multipart/form-data">
             <label for="title">Title:</label>
             <input type="text" id="title" name="title" required><br><br>
+            <label for="summary">Summary:</label>
+            <textarea id="summary" name="summary" required></textarea><br><br>
             <label for="content">Content:</label>
             <textarea id="content" name="content" required></textarea><br><br>
+            <label for="image">Image:</label>
+            <input type="file" id="image" name="image" accept="image/*"><br><br>
             <button type="submit">Upload</button>
         </form>
     </div>
     <script>
         document.getElementById('uploadForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            const title = document.getElementById('title').value;
-            const content = document.getElementById('content').value;
+            const formData = new FormData(this);
 
             fetch('/insert_article.php', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ title, content })
+                 body: formData
             })
             .then(response => response.json())
             .then(data => {

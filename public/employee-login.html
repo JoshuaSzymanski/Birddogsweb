@@ -128,9 +128,9 @@
     </div>
     <div class="signin-form">
         <h2>Employee Sign In</h2>
-        <form id="signin-form">
-            <input type="text" id="username" placeholder="Username" required>
-            <input type="password" id="password" placeholder="Password" required>
+        <form id="signin-form" action="/login" method="post">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Sign In</button>
         </form>
         <h2>Admin Access</h2>
@@ -139,42 +139,8 @@
             <input type="password" id="admin-password" placeholder="Admin Password" required>
             <button type="submit">Access Registration</button>
         </form>
-        <h2>Upload Article</h2>
-        <form id="uploadForm" action="/insert_article" method="POST">
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title" required><br><br>
-            <label for="content">Content:</label>
-            <textarea id="content" name="content" required></textarea><br><br>
-            <button type="submit">Upload</button>
-        </form>
     </div>
     <script>
-        document.getElementById('signin-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            fetch('/signin', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.href = '/upload-article';
-                } else {
-                    alert('Invalid credentials. Please try again.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
-            });
-        });
-
         document.getElementById('admin-access-form').addEventListener('submit', function(event) {
             event.preventDefault();
             const username = document.getElementById('admin-username').value;
