@@ -78,6 +78,40 @@ def login():
             flash('Database connection failed', 'error')
     return render_template('login.html')
 
+@app.route('/employee-login', methods=['GET', 'POST'])
+def employee_login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username == 'user' and password == 'pass':
+            session['logged_in'] = True
+            flash('Login successful', 'success')
+            return redirect(url_for('employee_page'))
+        else:
+            connection = get_db_connection()
+            if connection:
+                cursor = connection.cursor(dictionary=True)
+                cursor.execute('SELECT * FROM employees WHERE username = %s AND password = %s', (username, password))
+                user = cursor.fetchone()
+                cursor.close()
+                connection.close()
+                if user:
+                    session['logged_in'] = True
+                    flash('Login successful', 'success')
+                    return redirect(url_for('employee_page'))
+                else:
+                    flash('Invalid credentials', 'error')
+            else:
+                flash('Database connection failed', 'error')
+    return render_template('employee-login.html')
+
+@app.route('/employee-page')
+def employee_page():
+    if not session.get('logged_in'):
+        flash('Please log in to access this page', 'error')
+        return redirect(url_for('employee_login'))
+    return render_template('employee_page.html')
+
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
